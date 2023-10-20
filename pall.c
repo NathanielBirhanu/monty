@@ -1,22 +1,23 @@
 #include "monty.h"
 /**
- * pall - Prints all elements in the stack
- * @stack: Pointer to the stack
- * @line_number: Line number where the pall operation is performed
+ * f_pall - Print all values in the stack
+ * @head: Pointer to the head of the stack
+ * @counter: Line number in the Monty file (unused)
+ *
+ * Return: None
  */
-void pall(stack_t **stack, unsigned int line_number)
+void f_pall(stack_t **head, unsigned int counter)
 {
-    stack_t *temp = *stack;
+    stack_t *current_node;
+    (void) counter;
 
-    if (*stack == NULL)
-    {
-        fprintf(stderr, "Error: Stack underflow at line %u\n", line_number);
-        exit(EXIT_FAILURE);
-    }
+    current_node = *head;
+    if (current_node == NULL)
+        return;
 
-    while (temp != NULL)
+    while (current_node)
     {
-        printf("%d\n", temp->n);
-        temp = temp->next;
+        printf("%d\n", current_node->n);
+        current_node = current_node->next;
     }
 }

@@ -1,25 +1,53 @@
 #include "monty.h"
 /**
- * push - Pushes a new node onto the stack
- * @stack: Pointer to the stack
- * @x: Value to be inserted in the new node
- * @line_number: Line number where the push operation is performed
- */
-void push(stack_t **stack, int x, unsigned int line_number)
+ * f_push - add node to the stack
+ * @head: stack head
+ * @counter: line_number
+ * Return: no return
+*/
+void f_push(stack_t **head, unsigned int counter)
 {
-    stack_t *newnode = malloc(sizeof(stack_t));
-    if (newnode == NULL)
+    int value, index = 0, is_negative = 0, is_valid = 1;
+
+    if (bus.arg)
     {
-        fprintf(stderr, "Error: Memory allocation failed at line %u\n", line_number);
+        if (bus.arg[0] == '-')
+            is_negative = 1;
+
+        while (bus.arg[index] != '\0')
+        {
+            if (bus.arg[index] < '0' || bus.arg[index] > '9')
+            {
+                is_valid = 0;
+                break;
+            }
+            index++;
+        }
+
+        if (is_valid)
+        {
+            value = atoi(bus.arg);
+            if (is_negative)
+                value *= -1;
+
+            if (bus.lifi == 0)
+                newnode(head, value);
+        }
+        else
+        {
+            fprintf(stderr, "L%d: usage: push integer\n", counter);
+            fclose(bus.file);
+            free(bus.content);
+            free_stack(*head);
+            exit(EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        fprintf(stderr, "L%d: usage: push integer\n", counter);
+        fclose(bus.file);
+        free(bus.content);
+        free_stack(*head);
         exit(EXIT_FAILURE);
     }
-
-    newnode->n = x;
-    newnode->prev = NULL;
-    newnode->next = *stack;
-
-    if (*stack != NULL)
-        (*stack)->prev = newnode;
-
-    *stack = newnode;
 }

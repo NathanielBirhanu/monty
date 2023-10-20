@@ -1,62 +1,50 @@
 #include "monty.h"
+bus_t bus = {NULL, NULL, NULL, 0};
 /**
- * main - Entry point
- * @argc: Number of command-line arguments
- * @argv: Array of command-line arguments
- *
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
- */
+* main - monty code interpreter
+* @argc: number of arguments
+* @argv: monty file location
+* Return: 0 on success
+*/
 int main(int argc, char *argv[])
 {
+    FILE *file;
+    char *content = NULL;
+    size_t size = 0;
+    ssize_t read_line;
+
     stack_t *stack = NULL;
+    unsigned int counter = 0;
 
-    if (argc < 2)
+    if (argc != 2)
     {
-        fprintf(stderr, "Error: No command-line arguments provided\n");
-        return EXIT_FAILURE;
+        fprintf(stderr, "USAGE: monty file\n");
+        exit(EXIT_FAILURE);
     }
 
-    bool invalidInput = false;
-    unsigned int line_number = 1;
-    for (int i = 1; i < argc; i++)
+    file = fopen(argv[1], "r");
+    if (!file)
     {
-        char *endptr;
-        int x = strtol(argv[i], &endptr, 10);
-        if (*endptr != '\0')
+        fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+        exit(EXIT_FAILURE);
+    }
+
+    while ((read_line = getline(&content, &size, file)) != -1)
+    {
+        counter++;
+
+        if (read_line > 0)
         {
-            fprintf(stderr, "Error: Invalid argument at line %u\n", line_number);
-            invalidInput = true;
-            break;
+            execute(content, &stack, counter, file);
         }
-        push(&stack, x, line_number);
-        line_number++;
+
+        free(content);
+        content = NULL;
     }
 
-    if (invalidInput)
-    {
-        while (stack != NULL)
-        {
-            stack_t *temp = stack;
-            stack = stack->next;
-            free(temp);
-        }
-        return EXIT_FAILURE;
-    }
+    free_stack(stack);
+    fclose(file);
 
-    push(&stack, 2, line_number);
-    pall(&stack, line_number);
-    pint(&stack, line_number);
-    pop(&stack, line_number);
-    swap(&stack, line_number);
-    add(&stack, line_number);
-    nop(&stack, line_number);
-
-    while (stack != NULL)
-    {
-        stack_t *temp = stack;
-        stack = stack->next;
-        free(temp);
-    }
-
-    return EXIT_SUCCESS;
+    printf("Customized code executed!\n");
+    return 0;
 }
