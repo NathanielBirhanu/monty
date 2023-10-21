@@ -7,47 +7,29 @@
 */
 void f_push(stack_t **head, unsigned int counter)
 {
-    int value, index = 0, is_negative = 0, is_valid = 1;
+	int n, j = 0, flag = 0;
 
-    if (bus.arg)
-    {
-        if (bus.arg[0] == '-')
-            is_negative = 1;
-
-        while (bus.arg[index] != '\0')
-        {
-            if (bus.arg[index] < '0' || bus.arg[index] > '9')
-            {
-                is_valid = 0;
-                break;
-            }
-            index++;
-        }
-
-        if (is_valid)
-        {
-            value = atoi(bus.arg);
-            if (is_negative)
-                value *= -1;
-
-            if (bus.lifi == 0)
-                newnode(head, value);
-        }
-        else
-        {
-            fprintf(stderr, "L%d: usage: push integer\n", counter);
-            fclose(bus.file);
-            free(bus.content);
-            free_stack(*head);
-            exit(EXIT_FAILURE);
-        }
-    }
-    else
-    {
-        fprintf(stderr, "L%d: usage: push integer\n", counter);
-        fclose(bus.file);
-        free(bus.content);
-        free_stack(*head);
-        exit(EXIT_FAILURE);
-    }
+	if (bus.arg)
+	{
+		if (bus.arg[0] == '-')
+			j++;
+		for (; bus.arg[j] != '\0'; j++)
+		{
+			if (bus.arg[j] > 57 || bus.arg[j] < 48)
+				flag = 1; }
+		if (flag == 1)
+		{ fprintf(stderr, "L%d: usage: push integer\n", counter);
+			fclose(bus.file);
+			free(bus.content);
+			free_stack(*head);
+			exit(EXIT_FAILURE); }}
+	else
+	{ fprintf(stderr, "L%d: usage: push integer\n", counter);
+		fclose(bus.file);
+		free(bus.content);
+		free_stack(*head);
+		exit(EXIT_FAILURE); }
+	n = atoi(bus.arg);
+	if (bus.lifi == 0)
+		newnode(head, n);
 }
