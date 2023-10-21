@@ -1,15 +1,15 @@
 #include "monty.h"
 /**
- * f_pall - Print all values in the stack
+ * _pall - Print all values in the stack
  * @head: Pointer to the head of the stack
- * @counter: Line number in the Monty file (unused)
+ * @count: Line number in the Monty file (unused)
  *
  * Return: None
  */
-void f_pall(stack_t **head, unsigned int counter)
+void _pall(stack_t **head, unsigned int count)
 {
     stack_t *current_node;
-    (void) counter;
+    (void) count;
 
     current_node = *head;
     if (current_node == NULL)

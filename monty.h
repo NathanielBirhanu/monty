@@ -24,21 +24,21 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 /**
- * struct bus_s - variables -args, file, line content
+ * struct str_s - variables -args, file, line content
  * @arg: value
  * @file: pointer to monty file
- * @content: line content
- * @lifi: flag change stack <-> queue
+ * @type: line content
+ * @lf: flag change stack <-> queue
  * Description: carries values through the program
  */
-typedef struct bus_s
+typedef struct str_s
 {
 	char *arg;
 	FILE *file;
-	char *content;
-	int lifi;
-}  bus_t;
-extern bus_t bus;
+	char *type;
+	int lf;
+}  str_t;
+extern str_t str;
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -54,17 +54,17 @@ typedef struct instruction_s
 } instruction_t;
 char *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
 ssize_t getstdin(char **lineptr, int file);
-char  *clean_line(char *content);
-void f_push(stack_t **head, unsigned int number);
-void f_pall(stack_t **head, unsigned int number);
-void f_pint(stack_t **head, unsigned int number);
-int execute(char *content, stack_t **head, unsigned int counter, FILE *file);
+char  *clean_line(char *type);
+void _push(stack_t **head, unsigned int num);
+void _pall(stack_t **head, unsigned int num);
+void _pint(stack_t **head, unsigned int num);
+int execute(char *type, stack_t **head, unsigned int count, FILE *file);
 void free_stack(stack_t *head);
-void f_pop(stack_t **head, unsigned int counter);
-void f_swap(stack_t **head, unsigned int counter);
-void f_add(stack_t **head, unsigned int counter);
-void f_nop(stack_t **head, unsigned int counter);
+void _pop(stack_t **head, unsigned int count);
+void _swap(stack_t **head, unsigned int count);
+void _add(stack_t **head, unsigned int count);
+void _nop(stack_t **head, unsigned int count);
 void newnode(stack_t **head, int n);
 void addqueue(stack_t **head, int n);
-void f_queue(stack_t **head, unsigned int counter);
+void _queue(stack_t **head, unsigned int count);
 #endif
